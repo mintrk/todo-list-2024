@@ -14,6 +14,7 @@ import ConfirmDialog from "../dialogs/ConfirmDialog";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteProject } from "../../store/theme/projectSlice";
+import { useNavigate } from "react-router-dom";
 interface ProjectCardProps {
   project: Project;
 }
@@ -21,6 +22,7 @@ interface ProjectCardProps {
 const ProjectCard = ({ project }: ProjectCardProps) => {
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -28,6 +30,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         variant="outlined"
         onClick={() => {
           console.log("Click");
+          navigate(`/todo/${project.id}`);
         }}
         sx={{
           height: "12rem",

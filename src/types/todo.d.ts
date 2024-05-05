@@ -4,9 +4,13 @@ export type Todo = {
   desc?: string;
   status: "complete" | "incomplete";
 };
+export type initialTodo = {
+  title: string;
+  desc?: string;
+};
 
 export type Project = {
   id: number;
   title: string;
-  todos?: todo[];
+  todos?: Todo[];
 };

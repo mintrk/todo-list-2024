@@ -7,6 +7,7 @@ import { RootState } from "../store/store";
 import { Project } from "../types/todo";
 import { createProject } from "../store/theme/projectSlice";
 import ProjectCard from "../components/cards/ProjectCard";
+import BackButton from "../components/buttons/BackButton";
 
 const ProjectPage = () => {
   const theme = useTheme();
@@ -19,7 +20,8 @@ const ProjectPage = () => {
 
   return (
     <Container sx={{ paddingTop: { md: "2rem", xxs: "1rem" }, height: "100%" }}>
-      <Box sx={{ display: "flex", justifyContent: "end" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <BackButton />
         <ThemeSwitch />
       </Box>
       <Typography

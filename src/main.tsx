@@ -6,9 +6,10 @@ import Home from "./pages/Home.tsx";
 import { Provider } from "react-redux";
 import { persistor, store } from "./store/store.ts";
 import IThemeProvider from "./providers/ThemeProvider.tsx";
-import Project from "./pages/Project.tsx";
+import ProjectPage from "./pages/Project.tsx";
 
 import { PersistGate } from "redux-persist/integration/react";
+import TodoPage from "./pages/Todo.tsx";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/projects",
-    element: <Project />,
+    element: <ProjectPage />,
+  },
+  {
+    path: "/todo/:id",
+    element: <TodoPage />,
   },
 ]);
 
