@@ -9,24 +9,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-// Light theme
-export const lightTheme = createTheme({
-  palette: {
-    mode: "light",
-    primary: {
-      main: "#2DD9B0",
-    },
-    secondary: {
-      main: "#89EFD7",
-    },
-    info: {
-      main: "#2F333F",
-    },
-    background: {
-      default: "#fff",
-      paper: "#EBEBEB",
-    },
-  },
+const defaultTheme = createTheme({
   typography: {
     fontFamily: ["Anuphan", "sans-serif"].join(","),
   },
@@ -42,8 +25,29 @@ export const lightTheme = createTheme({
   },
 });
 
-// Dark theme
-export const darkTheme = createTheme({
+const lightTheme = createTheme({
+  ...defaultTheme,
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#2DD9B0",
+    },
+    secondary: {
+      main: "#89EFD7",
+    },
+    info: {
+      main: "#2F333F",
+    },
+    error: { main: "#FF6060" },
+    background: {
+      default: "#fff",
+      paper: "#F4F4F4",
+    },
+  },
+});
+
+const darkTheme = createTheme({
+  ...defaultTheme,
   palette: {
     mode: "dark",
     primary: {
@@ -55,22 +59,10 @@ export const darkTheme = createTheme({
     info: {
       main: "#fff",
     },
+    error: { main: "#FF6060" },
     background: {
       default: "#2F333F",
-      paper: "#626671",
-    },
-  },
-  typography: {
-    fontFamily: ["Anuphan", "sans-serif"].join(","),
-  },
-  breakpoints: {
-    values: {
-      xxs: 0,
-      xs: 350,
-      sm: 600,
-      md: 900,
-      lg: 1200,
-      xl: 1536,
+      paper: "#4D5260",
     },
   },
 });

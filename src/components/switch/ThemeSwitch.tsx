@@ -68,7 +68,7 @@ export const ThemeSwitch = () => {
         <LightModeIcon color="disabled" />
       )}
       <IOSSwitch
-        value={themeMode === "light" ? false : true}
+        checked={themeMode === "light" ? false : true}
         onClick={() => {
           dispatch(toggleTheme());
         }}
