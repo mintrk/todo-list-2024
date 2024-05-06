@@ -3,13 +3,14 @@ import {
   Card,
   CardContent,
   Checkbox,
+  IconButton,
   Typography,
   useTheme,
 } from "@mui/material";
-import React from "react";
 import { Todo } from "../../types/todo";
 import { useDispatch } from "react-redux";
-import { updateTodo } from "../../store/theme/projectSlice";
+import { deleteTodo, updateTodo } from "../../store/theme/projectSlice";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
 interface TodoCardProps {
   todo: Todo;
@@ -24,7 +25,15 @@ const TodoCard = ({ todo, projectId }: TodoCardProps) => {
     <>
       <Card variant="outlined">
         <CardContent
-          sx={{ padding: "0.5rem !important", display: "flex", gap: "0.5rem" }}
+          sx={{
+            padding: "0.5rem 1rem !important",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: "0.5rem",
+            cursor: "pointer",
+            opacity: `${todo.status === "complete" ? "0.6" : "1"}`,
+          }}
           onClick={() => {
             const newTodo: Todo = {
               ...todo,
@@ -32,33 +41,53 @@ const TodoCard = ({ todo, projectId }: TodoCardProps) => {
             };
             dispatch(updateTodo({ projectId: projectId, Todo: newTodo }));
           }}>
-          <Checkbox
-            disableRipple
-            sx={{ padding: "0" }}
-            checked={todo.status === "complete" ? true : false}
-            onChange={(e) => {
-              const newTodo: Todo = {
-                ...todo,
-                status: e.target.checked ? "complete" : "incomplete",
-              };
-              dispatch(updateTodo({ projectId: projectId, Todo: newTodo }));
-            }}
-          />
-          <Box>
-            <Typography
-              sx={{
-                textDecoration: `${
-                  todo.status === "complete" ? "line-through" : "none"
-                }`,
-                color: `${todo.status === "complete" && "#CECFD3"} `,
+          <Box sx={{ display: "flex", gap: "0.5rem" }}>
+            <Checkbox
+              disableRipple
+              sx={{ padding: "0" }}
+              checked={todo.status === "complete" ? true : false}
+              onChange={(e) => {
+                const newTodo: Todo = {
+                  ...todo,
+                  status: e.target.checked ? "complete" : "incomplete",
+                };
+                dispatch(updateTodo({ projectId: projectId, Todo: newTodo }));
+              }}
+            />
+            <Box>
+              <Typography
+                sx={{
+                  textDecoration: `${
+                    todo.status === "complete" ? "line-through" : "none"
+                  }`,
+                  color: `${todo.status === "complete" && "#CECFD3"} `,
+                }}>
+                {todo.title}
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{ color: `${todo.status === "complete" && "#CECFD3"} ` }}>
+                {todo.desc || ""}
+              </Typography>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}>
+            <IconButton
+              onClick={() => {
+                dispatch(deleteTodo({ projectId, todoId: todo.id }));
               }}>
-              {todo.title}
-            </Typography>
-            <Typography
-              variant="caption"
-              sx={{ color: `${todo.status === "complete" && "#CECFD3"} ` }}>
-              {todo.desc || ""}
-            </Typography>
+              <DeleteRoundedIcon
+                sx={{
+                  ":hover": { color: theme.palette.error.main },
+                  cursor: "pointer",
+                }}
+              />
+            </IconButton>
           </Box>
         </CardContent>
       </Card>

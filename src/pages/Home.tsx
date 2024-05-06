@@ -1,10 +1,20 @@
 import { Box, Button, Container, Typography, useTheme } from "@mui/material";
 import { ThemeSwitch } from "../components/switch/ThemeSwitch";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { setInitialData } from "../store/theme/projectSlice";
 
 const Home = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const isSet = localStorage.getItem("persist:root");
+    if (isSet === null) {
+      dispatch(setInitialData());
+    }
+  }, []);
 
   return (
     <Container

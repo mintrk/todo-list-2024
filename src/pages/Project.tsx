@@ -27,10 +27,14 @@ const ProjectPage = () => {
       <Typography
         variant="h3"
         color={theme.palette.info.main}
-        fontWeight="bold">
+        fontWeight="bold"
+        sx={{ paddingTop: { md: "1rem", xxs: "0.5rem" } }}>
         My projects
       </Typography>
-      <Grid container spacing={3} sx={{ paddingTop: "2rem" }}>
+      <Grid
+        container
+        spacing={3}
+        sx={{ paddingTop: { md: "2rem", xxs: "1rem" } }}>
         <CardGrid>
           <CreateProjectDialog onSubmit={handleCreateProject} />
         </CardGrid>

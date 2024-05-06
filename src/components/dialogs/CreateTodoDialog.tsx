@@ -5,15 +5,16 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
-import { Card, CardActionArea, useTheme } from "@mui/material";
+import { SxProps, useTheme } from "@mui/material";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { initialTodo } from "../../types/todo";
 
 interface CreateTodoDialogProps {
   onSubmit: (todo: initialTodo) => void;
+  sxButton?: SxProps;
 }
 
-const CreateTodoDialog = ({ onSubmit }: CreateTodoDialogProps) => {
+const CreateTodoDialog = ({ onSubmit, sxButton }: CreateTodoDialogProps) => {
   const initialTodoValue: initialTodo = {
     title: "",
     desc: "",
@@ -40,6 +41,7 @@ const CreateTodoDialog = ({ onSubmit }: CreateTodoDialogProps) => {
             color: "white",
             scale: "1.05",
           },
+          ...sxButton,
         }}
         size="large"
         onClick={() => {
@@ -52,6 +54,8 @@ const CreateTodoDialog = ({ onSubmit }: CreateTodoDialogProps) => {
         open={open}
         onClose={() => {
           setOpen(false);
+          setIsError(false);
+          setTodo(initialTodoValue);
         }}
         maxWidth="md"
         fullWidth
@@ -87,8 +91,8 @@ const CreateTodoDialog = ({ onSubmit }: CreateTodoDialogProps) => {
             helperText={isError ? "This is required field" : ""}
           />
           <TextField
-            id="title"
-            label="Description"
+            id="description"
+            label="Description (Optional)"
             variant="outlined"
             type="text"
             margin="dense"
@@ -99,7 +103,14 @@ const CreateTodoDialog = ({ onSubmit }: CreateTodoDialogProps) => {
           />
         </DialogContent>
         <DialogActions sx={{ padding: "0 1.5rem 1.25rem" }}>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button
+            onClick={() => {
+              setOpen(false);
+              setIsError(false);
+              setTodo(initialTodoValue);
+            }}>
+            Cancel
+          </Button>
           <Button
             type="submit"
             variant="contained"

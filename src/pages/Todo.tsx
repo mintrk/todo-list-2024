@@ -1,5 +1,13 @@
-import { Box, Container, Grid, Typography, useTheme } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Container,
+  Grid,
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { ThemeSwitch } from "../components/switch/ThemeSwitch";
 import BackButton from "../components/buttons/BackButton";
@@ -10,15 +18,27 @@ import { createTodo } from "../store/theme/projectSlice";
 import { RootState } from "../store/store";
 import TodoCard from "../components/cards/TodoCard";
 
-type Props = {};
-
-const TodoPage = (props: Props) => {
+const TodoPage = () => {
   const { id } = useParams();
   const theme = useTheme();
   const dispatch = useDispatch();
   const projects = useSelector((state: RootState) => state.project);
   const projectId = projects.findIndex((project) => project.id === Number(id));
   const todos = projects[projectId].todos;
+  const [sort, setSort] = useState("all");
+
+  const calculateTodo = () => {
+    const allTodo = todos?.length ?? 0;
+    const completeTodo =
+      todos?.reduce((acc, curr) => {
+        if (curr.status === "complete") {
+          acc += 1;
+        }
+        return acc;
+      }, 0) ?? 0;
+    const incompleteTodo = allTodo - completeTodo;
+    return { allTodo, completeTodo, incompleteTodo };
+  };
 
   return (
     <>
@@ -41,20 +61,70 @@ const TodoPage = (props: Props) => {
               variant="h4"
               fontWeight={600}
               color={theme.palette.info.main}>
-              You've got 4 todos today
+              You've got {calculateTodo().incompleteTodo} todos
             </Typography>
-            <CreateTodoDialog
-              onSubmit={(todo: initialTodo) => {
-                dispatch(createTodo({ projectId: Number(id), Todo: todo }));
-              }}
-            />
+            <Box
+              zIndex={100}
+              sx={{
+                position: "fixed",
+                bottom: "20px",
+                right: "20px",
+                [theme.breakpoints.up("xs")]: {
+                  position: "static",
+                },
+              }}>
+              <CreateTodoDialog
+                onSubmit={(todo: initialTodo) => {
+                  dispatch(createTodo({ projectId: Number(id), Todo: todo }));
+                }}
+              />
+            </Box>
           </Box>
-          <Grid container spacing={2}>
-            {todos?.map((todo) => (
-              <Grid item xxs={12} key={todo.id}>
-                <TodoCard todo={todo} projectId={Number(id)} />
-              </Grid>
-            ))}
+          <Box
+            sx={{
+              borderBottom: 1,
+              borderColor: "divider",
+            }}>
+            <Tabs
+              value={sort}
+              onChange={(_, value) => {
+                setSort(value);
+              }}
+              aria-label="basic tabs example"
+              allowScrollButtonsMobile
+              variant="scrollable"
+              sx={{
+                "& .MuiTabs-scrollButtons": {
+                  color: theme.palette.info.main,
+                },
+              }}>
+              <Tab label="All todo" value="all" />
+              <Tab label="Completed" value="complete" />
+              <Tab label="Incomplete" value="incomplete" />
+            </Tabs>
+          </Box>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              paddingTop: "1rem",
+              [theme.breakpoints.down("xs")]: {
+                paddingBottom: "6rem",
+              },
+            }}>
+            {todos
+              ?.filter((todo) => {
+                if (sort === "complete") {
+                  return todo.status === "complete";
+                } else if (sort === "incomplete") {
+                  return todo.status === "incomplete";
+                } else return todo;
+              })
+              .map((todo) => (
+                <Grid item xxs={12} key={todo.id}>
+                  <TodoCard todo={todo} projectId={Number(id)} />
+                </Grid>
+              ))}
           </Grid>
         </Container>
       </Container>

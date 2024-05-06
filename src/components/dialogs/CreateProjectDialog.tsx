@@ -31,6 +31,7 @@ const CreateProjectDialog = ({ onSubmit }: CreateProjectDialogProps) => {
           }}
           onClick={() => {
             setOpen(true);
+            setIsError(false);
           }}>
           <AddRoundedIcon fontSize="large" />
         </CardActionArea>
@@ -88,6 +89,7 @@ const CreateProjectDialog = ({ onSubmit }: CreateProjectDialogProps) => {
                 setOpen(false);
               } else {
                 setIsError(true);
+                setIsError(false);
               }
             }}>
             Create
