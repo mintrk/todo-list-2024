@@ -69,7 +69,7 @@ const TodoPage = () => {
                 position: "fixed",
                 bottom: "20px",
                 right: "20px",
-                [theme.breakpoints.up("xs")]: {
+                [theme.breakpoints.up("sm")]: {
                   position: "static",
                 },
               }}>
