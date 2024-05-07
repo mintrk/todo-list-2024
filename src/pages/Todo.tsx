@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 import { ThemeSwitch } from "../components/switch/ThemeSwitch";
 import BackButton from "../components/buttons/BackButton";
 import CreateTodoDialog from "../components/dialogs/CreateTodoDialog";
-import { initialTodo } from "../types/todo";
+import { Project, Todo, initialTodo } from "../types/todo";
 import { useDispatch, useSelector } from "react-redux";
 import { createTodo } from "../store/theme/projectSlice";
 import { RootState } from "../store/store";
@@ -23,14 +23,16 @@ const TodoPage = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const projects = useSelector((state: RootState) => state.project);
-  const projectId = projects.findIndex((project) => project.id === Number(id));
+  const projectId = projects.findIndex(
+    (project: Project) => project.id === Number(id)
+  );
   const todos = projects[projectId].todos;
   const [sort, setSort] = useState("all");
 
   const calculateTodo = () => {
     const allTodo = todos?.length ?? 0;
     const completeTodo =
-      todos?.reduce((acc, curr) => {
+      todos?.reduce((acc: number, curr: Todo) => {
         if (curr.status === "complete") {
           acc += 1;
         }
@@ -113,14 +115,14 @@ const TodoPage = () => {
               },
             }}>
             {todos
-              ?.filter((todo) => {
+              ?.filter((todo: Todo) => {
                 if (sort === "complete") {
                   return todo.status === "complete";
                 } else if (sort === "incomplete") {
                   return todo.status === "incomplete";
                 } else return todo;
               })
-              .map((todo) => (
+              .map((todo: Todo) => (
                 <Grid item xxs={12} key={todo.id}>
                   <TodoCard todo={todo} projectId={Number(id)} />
                 </Grid>
